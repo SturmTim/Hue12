@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import tsturm18.pos.postfixcalculator.arithmeticutils.PostFixConverter;
+import tsturm18.pos.postfixcalculator.arithmeticutils.PostfixCalculator;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView calc;
@@ -28,4 +31,13 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) view;
         calc.setText(calc.getText().toString() + button.getText().toString());
     }
+
+    @SuppressLint("SetTextI18n")
+    public void calc (View view){
+        PostFixConverter converter = new PostFixConverter(calc.getText().toString());
+        PostfixCalculator calculator = new PostfixCalculator(converter.getPostfixAsList());
+        String result = calculator.getResult().toString();
+        calc.setText(result);
+    }
+
 }

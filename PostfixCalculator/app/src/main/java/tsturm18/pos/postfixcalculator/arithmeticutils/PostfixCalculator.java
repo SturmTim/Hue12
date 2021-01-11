@@ -1,5 +1,6 @@
 package tsturm18.pos.postfixcalculator.arithmeticutils;
 
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -7,36 +8,41 @@ import java.util.List;
 
 public class PostfixCalculator {
 
-    private final String infix;
-    private Deque<Character> stack = new ArrayDeque<>();
-    private List<String> postfix = new ArrayList<>();
+    private List<String> expressions;
+    private Deque<Double> stack = new ArrayDeque<>();
 
-    public PostfixCalculator(String infix) {
-        this.infix = infix;
+    public PostfixCalculator(List<String> expressions) {
+        this.expressions = expressions;
     }
 
-    private void convertExpression ( ) {
+    public BigDecimal getResult (){
+        Double leftNumber;
+        Double rightNumber;
 
+        for (int i = 0; i < expressions.size(); i++) {
+            char currentChar = expressions.get(i).charAt(0);
+            if(currentChar==('+') || currentChar==('-') || currentChar==('*') || currentChar==('/')) {
+                rightNumber = stack.pop();
+                leftNumber = stack.pop();
+
+                stack.push(calculate(leftNumber, currentChar, rightNumber));
+            } else
+                stack.push(Double.valueOf(expressions.get(i)));
+        }
+        return BigDecimal.valueOf(stack.pop());
     }
 
-    private void inputToStack ( char input ){
+    private Double calculate(Double left, char expression, Double right) {
+        switch (expression){
+            case '+':
+                return left + right;
+            case '-':
+                return left - right;
+            case '*':
+                return left * right;
+            default:
+                return left / right;
+        }
 
-    }
-
-    private int getPrecedence ( char op ){
-
-        return 0;
-    }
-
-    private void clearStack ( ) {
-
-    }
-
-    public String getPostfixExpression ( ) {
-
-        return null;
-    }
-    public List<String> getPostfixAsList ( ) {
-        return null;
     }
 }
